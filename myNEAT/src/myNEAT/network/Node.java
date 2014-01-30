@@ -10,14 +10,11 @@ public class Node {
 	private double input, output;
 	private boolean activated;
 	private ActivationFunction activationFunction;
-	private ArrayList<Connection> outgoing;
 	
-	public Node(int id, int nodeType, ActivationFunction activationFunction, ArrayList<Connection> outgoing ){
+	public Node(int id, int nodeType, ActivationFunction activationFunction ){
 		this.nodeID=id;
 		this.nodeType = nodeType;
 		this.activationFunction = activationFunction;
-		this.outgoing = new ArrayList<>();
-		this.outgoing.addAll( outgoing);
 		input = 0;
 		output = 0;
 		activated=false;
@@ -40,9 +37,6 @@ public class Node {
 		this.input += input;
 	}
 	
-	public void addOutgoingConnection(Connection out){
-		outgoing.add(out);
-	}
 	
 	/**
 	 * Flushes the node and resets input, output and inputNExt to 0
@@ -76,10 +70,5 @@ public class Node {
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;
 	}
-	
-	public ArrayList<Connection> getOutgoing(){
-		return outgoing;
-	}
-	
 	
 }

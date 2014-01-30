@@ -33,21 +33,32 @@ public class NeuralNetworkTest {
 		//Set up input and output nodes
 		for (int i = 0; i < 3; i++){
 			ActivationFunction af = new AFSame();
-			inputNodes.add(new Node(i, NeuralNetwork.INPUT, af, new ArrayList<Connection>()));
-			outputNodes.add(new Node(i + 3, NeuralNetwork.OUTPUT, af, new ArrayList<Connection>()));
+			inputNodes.add(new Node(i, NeuralNetwork.INPUT, af));
+			outputNodes.add(new Node(i + 3, NeuralNetwork.OUTPUT, af));
 		}
 		
-		//Connect input nodes to output nodes
+		//Create connections
 		for (int i = 0; i < 3; i++){
 			Node in = inputNodes.get(i);
 			Node out = outputNodes.get(i);
 			Connection c = new Connection(i, in, out, 1, true);
-			in.addOutgoingConnection(c);
 			connections.add(c);
 		}
 		
 		//Create neural network
+		NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
 		
+		//Do full activation
+		double[] inputs = {0,1,2};
+		double[] outputs = nn.activate(inputs, true);
+		
+		//Test result
+		double e = 0.0001;
+		double out;
+		for (int i = 0; i<outputs.length; i++){
+			out = outputs[i];
+			assertTrue(out > i - e && out < i + e);
+		}
 	}
 	
 	@Test
