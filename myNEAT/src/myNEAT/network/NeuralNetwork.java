@@ -1,7 +1,6 @@
 package myNEAT.network;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,8 +13,7 @@ public class NeuralNetwork {
 	
 	/* Typology */
 	private ArrayList<Node> allNodes, inputNodes, outputNodes, hiddenNodes;
-	private HashMap<Integer, ArrayList<Connection>> connections;
-	
+	private ArrayList<Connection> connections;
 	
 	/**
 	 * Creates the neural network based on the lists of nodes and connections.
@@ -26,44 +24,29 @@ public class NeuralNetwork {
 	 * @param connections
 	 */
 	public NeuralNetwork(ArrayList<Node> inputNodes, ArrayList<Node> outputNodes, 
-			ArrayList<Node> hiddenNodes, ArrayList<Connection> listOfConnections){
+			ArrayList<Node> hiddenNodes, ArrayList<Connection> connections){
 		
 		//Create lists
 		this.inputNodes = new ArrayList<>();
 		this.hiddenNodes = new ArrayList<>();
 		this.outputNodes = new ArrayList<>();
 		this.allNodes = new ArrayList<>();
-		this.connections = new HashMap<Integer, ArrayList<Connection>>();
+		this.connections = new ArrayList<>();
 		
-		//Add values to containers
+		//Copy values
 		this.inputNodes.addAll(inputNodes);
 		this.outputNodes.addAll(outputNodes);
 		this.hiddenNodes.addAll(hiddenNodes);
 		this.allNodes.addAll(inputNodes);
 		this.allNodes.addAll(outputNodes);
 		this.allNodes.addAll(hiddenNodes);
+		this.connections.addAll(connections);
 		
-		for (Connection c: listOfConnections){
-			addConnection(c);
-		}
-		
-		
-		
-	}
-	
-	private void addConnection(Connection c){
-		int key = c.getIn().getNodeID();
-		ArrayList<Connection> list = connections.get(key);
-		if (list == null){
-			list = new ArrayList<>();
-			connections.put(key, list);
-		}
-		list.add(c);
 	}
 	
 	public double[] activate (double[] inputs, boolean fullActivation){
 		//Test if number of inputs is correct
-		if (inputNodes.size() != inputs.length){
+		if (inputNodes.size() - 1 != inputs.length){
 					//Not good. return an error
 					System.out.println("The number of inputs is different from the number of inputnodes");
 					return null;
@@ -130,8 +113,7 @@ public class NeuralNetwork {
 			Node n = activationQueue.poll();
 			Node out;
 			n.activate();
-			int nodeID = n.getNodeID();
-			for (Connection c : connections.get(nodeID)){
+			for (Connection c : n.getOutgoing()){
 				if (c.isEnabled()){
 					c.propagateSignal();
 					out = c.getOut();
@@ -150,13 +132,8 @@ public class NeuralNetwork {
 		}
 		
 		//Propagate all signals
-		for (Node n : allNodes){
-			int nodeID = n.getNodeID();
-			for (Connection c : connections.get(nodeID)){
-				if (c.isEnabled()){
-					c.propagateSignal();
-				}
-			}
+		for (Connection c : connections){
+			c.propagateSignal();
 		}
 	}
 }

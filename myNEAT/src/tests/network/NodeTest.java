@@ -20,7 +20,7 @@ public class NodeTest {
 	public void setUp() throws Exception {
 		ActivationFunction af = new AFSame();
 		outgoing = new ArrayList<>();
-		n = new Node(0, 1, af);		
+		n = new Node(0, 1, af, outgoing);		
 	}
 
 	@Test

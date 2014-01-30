@@ -22,8 +22,8 @@ public class ConnectionTest {
 	public void setUp() throws Exception {
 		ActivationFunction af = new AFSame();
 		outgoing = new ArrayList<>();
-		in = new Node(0, 1, af);
-		out = new Node(1, 0, af);
+		in = new Node(0, 1, af, outgoing);
+		out = new Node(1, 0, af, outgoing);
 		
 	}
 
