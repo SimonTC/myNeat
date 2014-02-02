@@ -5,35 +5,35 @@ public class Connection {
 	private Node in, out;
 	private double weight;
 	private boolean enabled, activated;
-	
-	public Connection(int id, Node in, Node out, double weight, boolean enabled){
+
+	public Connection(int id, Node in, Node out, double weight, boolean enabled) {
 		this.connectionID = id;
-		this.in=in;
+		this.in = in;
 		this.out = out;
 		this.weight = weight;
 		this.enabled = enabled;
 	}
-	
+
 	/**
 	 * Propagates output from ingoing node to outgoing node
 	 */
-	public void propagateSignal(){
-		if (enabled){
+	public void propagateSignal() {
+		if (enabled) {
 			double input = in.getOutput();
 			double output = input * weight;
 			out.addInput(output);
 			activated = true;
-		}		
+		}
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		activated = false;
 	}
-	
-	public void addWeight(double weight){
+
+	public void addWeight(double weight) {
 		this.weight += weight;
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled;
 	}
