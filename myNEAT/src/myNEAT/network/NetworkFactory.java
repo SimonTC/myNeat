@@ -2,6 +2,8 @@ package myNEAT.network;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ public class NetworkFactory {
 	private int genomeID;
 	private ArrayList<Node> inputNodes, outputNodes, hiddenNodes, allNodes;
 	private ArrayList<Connection> connections;
+	String delimiter = " ";
 	
 	public NeuralNetwork createNetwork(String genomePath) throws FileNotFoundException{
 		//Open file and scanner
@@ -139,7 +142,104 @@ public class NetworkFactory {
 		}
 		
 		return null;
+	}	
+	
+	public void createGenomeFile(NeuralNetwork network, String filePath) throws FileNotFoundException, IOException{
+		//Read info from neural network
+		genomeID = network.getID();
+		allNodes = network.getAllNodes();
+		distributeNodes();
+		connections = network.getConnections();
+		
+		//Write to file
+		File genomeFile = new File(filePath);
+		PrintWriter output = new PrintWriter(genomeFile);
+		
+		//Write first line
+		output.println("genomestart " + genomeID);
+		
+		//Write nodes
+		printNodes(output);
+		
+		//Write connections
+		printConnections(output);
+		
+		//Write end line
+		output.println("genomeend");
+		
 	}
 	
+	private void distributeNodes(){
+		for (Node n : allNodes){
+			switch (n.getType()){
+			case NeuralNetwork.BIAS: inputNodes.add(n); break;
+			case NeuralNetwork.INPUT: inputNodes.add(n); break;
+			case NeuralNetwork.HIDDEN: hiddenNodes.add(n); break;
+			case NeuralNetwork.OUTPUT: outputNodes.add(n); break;
+			}
+		}
+	}
+
+	private void printNodes(PrintWriter output){
+		//Write input nodes
+		Node bias = null;
+		for (Node n : inputNodes){
+			if (n.getType() == NeuralNetwork.BIAS){
+				//We save bias for later
+				bias = n;
+			} else {
+				output.println(writeNodeInfo(n));
+			}
+		}
+		output.println(writeNodeInfo(bias));
+		
+		//Write output nodes
+		for (Node n : outputNodes){
+			output.println(writeNodeInfo(n));			
+		}
+		
+		//Write hidden nodes
+				for (Node n : hiddenNodes){
+					output.println(writeNodeInfo(n));			
+				}		
+		
+	}
 	
+	private String writeNodeInfo(Node n){
+		String s;
+		
+		//Read values
+				int nodeID = n.getNodeID();
+				int nodeTypeID = n.getType();
+				int activationFunctionID = n.getActivationFunction().getType();
+				double biasValue;
+				if (nodeTypeID == NeuralNetwork.BIAS){
+					biasValue = n.getActivationFunction().getActivation(0); //Input value doesn't matter as output from bias is constant
+				} else {
+					biasValue = 0;
+				}
+		s = "node" + delimiter + nodeID + delimiter + nodeTypeID + delimiter + activationFunctionID + delimiter + biasValue;
+		return s;
+	}
+	
+	private void printConnections(PrintWriter output){
+		for (Connection c : connections){
+			//Read values
+			int connectionID = c.getConnectionID();
+			int inNodeID = c.getIn().getNodeID();
+			int outNodeID = c.getOut().getNodeID();
+			double connectionWeight = c.getWeight();
+			int enabled;
+			if (c.isEnabled()){
+				enabled = 1;
+			} else {
+				enabled = 0;
+			}
+			
+			//Write info
+			String s = "conn" + delimiter + connectionID + delimiter + inNodeID + delimiter + outNodeID + delimiter + connectionWeight + delimiter + enabled;
+			output.println(s);
+		}
+		
+	}
 }

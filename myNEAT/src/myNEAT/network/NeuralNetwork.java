@@ -16,7 +16,7 @@ public class NeuralNetwork {
 	private ArrayList<Connection> connections;
 	
 	/* Other info */
-	int genomeID;
+	private int genomeID;
 
 	/**
 	 * Creates the neural network based on the lists of nodes and connections.
@@ -156,5 +156,17 @@ public class NeuralNetwork {
 		for (Connection c : connections){
 			c.reset();
 		}
+	}
+	
+	public int getID(){
+		return genomeID;
+	}
+	
+	public ArrayList<Node> getAllNodes(){
+		return allNodes;
+	}
+	
+	public ArrayList<Connection> getConnections(){
+		return connections;
 	}
 }
