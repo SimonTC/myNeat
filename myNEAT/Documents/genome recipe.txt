@@ -1,0 +1,10 @@
+genomestart [int genomeID]
+node [int NodeID] [int NodetypeID] [int ActivationFunctionID] [double biasValue]
+.
+.
+.
+conn [int ConnectionID] [int inNodeID] [int outNodeID] [double connectionWeight] [int enabled]
+.
+.
+.
+genomeend

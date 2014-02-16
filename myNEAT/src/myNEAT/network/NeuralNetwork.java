@@ -14,6 +14,9 @@ public class NeuralNetwork {
 	/* Typology */
 	private ArrayList<Node> allNodes, inputNodes, outputNodes, hiddenNodes;
 	private ArrayList<Connection> connections;
+	
+	/* Other info */
+	int genomeID;
 
 	/**
 	 * Creates the neural network based on the lists of nodes and connections.
@@ -24,7 +27,7 @@ public class NeuralNetwork {
 	 * @param hiddenNodes
 	 * @param connections
 	 */
-	public NeuralNetwork(ArrayList<Node> inputNodes,
+	public NeuralNetwork(int genomeID, ArrayList<Node> inputNodes,
 			ArrayList<Node> outputNodes, ArrayList<Node> hiddenNodes,
 			ArrayList<Connection> connections) {
 
@@ -43,6 +46,7 @@ public class NeuralNetwork {
 		this.allNodes.addAll(outputNodes);
 		this.allNodes.addAll(hiddenNodes);
 		this.connections.addAll(connections);
+		this.genomeID = genomeID;
 
 	}
 

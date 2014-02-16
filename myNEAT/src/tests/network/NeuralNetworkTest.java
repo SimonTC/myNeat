@@ -71,7 +71,7 @@ public class NeuralNetworkTest {
 		connectOneInputToOneOutput();
 		
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
 		
 		//Test that inputs == outputs
 		double e = 0.0001;
@@ -125,7 +125,7 @@ public class NeuralNetworkTest {
 				connections.add(c);
 		
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
 		
 		//Do 1st activation 
 		double[] inputs = {1,1,1};
@@ -167,7 +167,7 @@ public class NeuralNetworkTest {
 		connectOneInputToOneOutput();
 				
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
 				
 		//Test if they are reachable
 		assertTrue(nn.isAllOutputsReachable());
@@ -190,7 +190,7 @@ public class NeuralNetworkTest {
 		}
 				
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
 				
 		//Test if they are reachable
 		assertTrue(!nn.isAllOutputsReachable());
