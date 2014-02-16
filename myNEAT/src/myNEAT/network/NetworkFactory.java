@@ -167,6 +167,8 @@ public class NetworkFactory {
 		//Write end line
 		output.println("genomeend");
 		
+		output.close();
+		
 	}
 	
 	private void distributeNodes(){
