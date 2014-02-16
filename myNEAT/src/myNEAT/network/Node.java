@@ -1,6 +1,7 @@
 package myNEAT.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import myNEAT.network.activationFunctions.ActivationFunction;
 
@@ -10,15 +11,15 @@ public class Node {
 	private double input, output;
 	private boolean activated;
 	private ActivationFunction activationFunction;
-	private ArrayList<Connection> outgoing;
+	private HashMap<Integer, Connection> outgoing;
 
 	public Node(int id, int nodeType, ActivationFunction activationFunction,
-			ArrayList<Connection> outgoing) {
+			HashMap<Integer, Connection> outgoing) {
 		this.nodeID = id;
 		this.nodeType = nodeType;
 		this.activationFunction = activationFunction;
-		this.outgoing = new ArrayList<>();
-		this.outgoing.addAll(outgoing);
+		this.outgoing = new HashMap<>();
+		this.outgoing.putAll(outgoing);
 		input = 0;
 		output = 0;
 		activated = false;
@@ -43,7 +44,7 @@ public class Node {
 	}
 
 	public void addOutgoingConnection(Connection out) {
-		outgoing.add(out);
+		outgoing.put(out.getConnectionID(),out);
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class Node {
 		return activationFunction;
 	}
 
-	public ArrayList<Connection> getOutgoing() {
+	public HashMap<Integer, Connection> getOutgoing() {
 		return outgoing;
 	}
 

@@ -3,6 +3,7 @@ package tests.network;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import myNEAT.network.Connection;
 import myNEAT.network.Node;
@@ -14,12 +15,12 @@ import org.junit.Test;
 
 public class NodeTest {
 	Node n;
-	ArrayList<Connection> outgoing;
+	HashMap<Integer, Connection> outgoing;
 	
 	@Before
 	public void setUp() throws Exception {
 		ActivationFunction af = new AFSame();
-		outgoing = new ArrayList<>();
+		outgoing = new HashMap<Integer, Connection>();
 		n = new Node(0, 1, af, outgoing);		
 	}
 

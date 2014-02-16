@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import myNEAT.network.activationFunctions.AFBias;
@@ -19,9 +20,17 @@ import myNEAT.network.activationFunctions.ActivationFunction;
 public class NetworkFactory {
 	//Variables used for the creation of the network
 	private int genomeID;
-	private ArrayList<Node> inputNodes, outputNodes, hiddenNodes, allNodes;
-	private ArrayList<Connection> connections;
+	private HashMap<Integer, Node> inputNodes, outputNodes, hiddenNodes, allNodes;
+	private HashMap<Integer, Connection> connections;
 	String delimiter = " ";
+	
+	public NetworkFactory(){
+		inputNodes = new HashMap<>();
+		outputNodes = new HashMap<>();
+		hiddenNodes = new HashMap<>();
+		allNodes = new HashMap<>();
+		connections = new HashMap<>();
+	}
 	
 	public NeuralNetwork createNetwork(String genomePath) throws FileNotFoundException{
 		//Open file and scanner
@@ -29,11 +38,11 @@ public class NetworkFactory {
 		Scanner inputFile = new Scanner(file);
 				
 		//Ready lists
-		inputNodes = new ArrayList<>();
-		outputNodes = new ArrayList<>();
-		hiddenNodes = new ArrayList<>();
-		allNodes = new ArrayList<>();
-		connections = new ArrayList<>();
+		inputNodes = new HashMap<>();
+		outputNodes = new HashMap<>();
+		hiddenNodes = new HashMap<>();
+		allNodes = new HashMap<>();
+		connections = new HashMap<>();
 		
 		//Scan file
 		Scanner curLine;;
@@ -87,17 +96,17 @@ public class NetworkFactory {
 			ActivationFunction af = createActivationFunction(activationFunctionID, biasValue);
 			
 		//Create node
-			Node n = new Node(nodeID, nodeTypeID, af, new ArrayList<Connection>());
+			Node n = new Node(nodeID, nodeTypeID, af, new HashMap<Integer, Connection>());
 		
 		//Add node to correct list
 			switch (nodeTypeID){
-			case NeuralNetwork.BIAS: inputNodes.add(n); break;
-			case NeuralNetwork.INPUT: inputNodes.add(n); break;
-			case NeuralNetwork.HIDDEN: hiddenNodes.add(n); break;
-			case NeuralNetwork.OUTPUT: outputNodes.add(n); break;			
+			case NeuralNetwork.BIAS: inputNodes.put(nodeID, n); break;
+			case NeuralNetwork.INPUT: inputNodes.put(nodeID, n); break;
+			case NeuralNetwork.HIDDEN: hiddenNodes.put(nodeID, n); break;
+			case NeuralNetwork.OUTPUT: outputNodes.put(nodeID, n); break;			
 			}
 			
-			allNodes.add(n);
+			allNodes.put(nodeID, n);
 	
 	}
 	
@@ -123,26 +132,16 @@ public class NetworkFactory {
 		int enabled = curLine.nextInt();
 		
 		//Collect in and out node
-		Node in = getNode(inNodeID);
-		Node out = getNode(outNodeID);
+		Node in = allNodes.get(inNodeID);
+		Node out = allNodes.get(outNodeID);
 		
 		//Create connection
 		Connection c = new Connection(connectionID, in, out, connectionWeight, enabled == 1);
 		
 		//Add connection to list
-		connections.add(c);
+		connections.put(connectionID, c);
 		
 	}
-	
-	private Node getNode(int nodeID){
-		for (Node n : allNodes){
-			if (n.getNodeID() == nodeID){
-				return n;
-			}
-		}
-		
-		return null;
-	}	
 	
 	public void createGenomeFile(NeuralNetwork network, String filePath) throws FileNotFoundException, IOException{
 		//Read info from neural network
@@ -172,12 +171,12 @@ public class NetworkFactory {
 	}
 	
 	private void distributeNodes(){
-		for (Node n : allNodes){
+		for (Node n : allNodes.values()){
 			switch (n.getType()){
-			case NeuralNetwork.BIAS: inputNodes.add(n); break;
-			case NeuralNetwork.INPUT: inputNodes.add(n); break;
-			case NeuralNetwork.HIDDEN: hiddenNodes.add(n); break;
-			case NeuralNetwork.OUTPUT: outputNodes.add(n); break;
+			case NeuralNetwork.BIAS: inputNodes.put(n.getNodeID(), n); break;
+			case NeuralNetwork.INPUT: inputNodes.put(n.getNodeID(), n); break;
+			case NeuralNetwork.HIDDEN: hiddenNodes.put(n.getNodeID(), n); break;
+			case NeuralNetwork.OUTPUT: outputNodes.put(n.getNodeID(), n); break;
 			}
 		}
 	}
@@ -185,7 +184,7 @@ public class NetworkFactory {
 	private void printNodes(PrintWriter output){
 		//Write input nodes
 		Node bias = null;
-		for (Node n : inputNodes){
+		for (Node n : inputNodes.values()){
 			if (n.getType() == NeuralNetwork.BIAS){
 				//We save bias for later
 				bias = n;
@@ -196,12 +195,12 @@ public class NetworkFactory {
 		output.println(writeNodeInfo(bias));
 		
 		//Write output nodes
-		for (Node n : outputNodes){
+		for (Node n : outputNodes.values()){
 			output.println(writeNodeInfo(n));			
 		}
 		
 		//Write hidden nodes
-				for (Node n : hiddenNodes){
+				for (Node n : hiddenNodes.values()){
 					output.println(writeNodeInfo(n));			
 				}		
 		
@@ -225,7 +224,7 @@ public class NetworkFactory {
 	}
 	
 	private void printConnections(PrintWriter output){
-		for (Connection c : connections){
+		for (Connection c : connections.values()){
 			//Read values
 			int connectionID = c.getConnectionID();
 			int inNodeID = c.getIn().getNodeID();

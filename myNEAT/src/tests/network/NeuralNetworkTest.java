@@ -3,10 +3,13 @@ package tests.network;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import myNEAT.network.Connection;
 import myNEAT.network.NeuralNetwork;
 import myNEAT.network.Node;
+import myNEAT.network.activationFunctions.AFBias;
 import myNEAT.network.activationFunctions.AFSame;
 import myNEAT.network.activationFunctions.ActivationFunction;
 
@@ -15,46 +18,64 @@ import org.junit.Test;
 
 public class NeuralNetworkTest {
 	
-	ArrayList<Node> inputNodes;
-	ArrayList<Node> outputNodes;
-	ArrayList<Node> hiddenNodes;
-	ArrayList<Connection> connections;
+	private HashMap<Integer, Node> inputNodes, outputNodes, hiddenNodes;
+	private HashMap<Integer, Connection> connections;
 	
 	@Before
 	public void setUp() throws Exception {
-		inputNodes = new ArrayList<>();
-		outputNodes = new ArrayList<>();
-		hiddenNodes = new ArrayList<>();
-		connections = new ArrayList<>();
+		inputNodes = new HashMap<>();
+		outputNodes = new HashMap<>();
+		hiddenNodes = new HashMap<>();
+		connections = new HashMap<>();
 	}
 	
-	private void setupInputOutputNodes(){
-		for (int i = 0; i < 3; i++){
-			ActivationFunction af = new AFSame();
-			inputNodes.add(new Node(i, NeuralNetwork.INPUT, af, new ArrayList<Connection>()));
-			outputNodes.add(new Node(i + 3, NeuralNetwork.OUTPUT, af, new ArrayList<Connection>()));
-		}
+	private void createNodes(){
+		Node i1, i2, i3; //Input nodes
+		Node h1, h2; //Hidden nodes
+		Node o1, o2, o3; //Output nodes
+		ActivationFunction afSame = new AFSame();
+		
+		i1 = new Node(1, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
+		i2 = new Node(2, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
+		i3 = new Node(3, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
+		inputNodes.put(1,i1);
+		inputNodes.put(2,i2);
+		inputNodes.put(3,i3);
+		
+		o1 = new Node(5, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		o2 = new Node(6, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		o3 = new Node(7, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		outputNodes.put(5,o1);
+		outputNodes.put(6,o2);
+		outputNodes.put(7,o3);
+		
+		h1 = new Node(8, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
+		h2 = new Node(9, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
+		hiddenNodes.put(8,h1);
+		hiddenNodes.put(9,h2);
 	}
 	
 	private void connectOneInputToOneOutput(){
+		
 		for (int i = 0; i < 3; i++){
-			Node in = inputNodes.get(i);
-			Node out = outputNodes.get(i);
+			Node in = inputNodes.get(i + 1);
+			Node out = outputNodes.get(i + 5);
 			Connection c = new Connection(i, in, out, 1, true);
 			in.addOutgoingConnection(c);
-			connections.add(c);
+			connections.put(i,c);
 		}
 	}
 	
 	private void connectAllInputsToAllOutput(){
 		int counter = 0;
 		for (int i = 0; i < inputNodes.size(); i++){
-			Node in = inputNodes.get(i);
+			Node in = inputNodes.get(i + 1);
 			for (int j = 0; j < outputNodes.size(); j++){
-				Node out = outputNodes.get(j);
-				Connection c = new Connection(counter++, in, out, 1, true);
+				Node out = outputNodes.get(j + 5);
+				Connection c = new Connection(counter, in, out, 1, true);
 				in.addOutgoingConnection(c);
-				connections.add(c);
+				connections.put(counter,c);
+				counter++;
 			}			
 		}
 	}
@@ -65,7 +86,7 @@ public class NeuralNetworkTest {
 	 */
 	public void testNeuralNetworkCorrectInputPattern(){
 		//Set up input and output nodes
-		setupInputOutputNodes();
+		createNodes();
 		
 		//Connect input nodes to output nodes
 		connectOneInputToOneOutput();
@@ -87,42 +108,38 @@ public class NeuralNetworkTest {
 	@Test
 	public void testActivate_Continouous() {
 		//Set up input and output nodes
-		setupInputOutputNodes();
+		createNodes();
 		
-		//Add hidden node
-		ActivationFunction af = new AFSame();
-		hiddenNodes.add(new Node(6, NeuralNetwork.HIDDEN, af, new ArrayList<Connection>()));
-				
 		//Connect all input nodes to output nodes
 		connectAllInputsToAllOutput();
 		
-		//Connect input 1 to hidden node 
-		Node in = inputNodes.get(1);
-		Node out = hiddenNodes.get(0);
-		Connection c = new Connection(7, in, out, 1, true);
+		//Connect input id 2 to hidden node id 8
+		Node in = inputNodes.get(2);
+		Node out = hiddenNodes.get(8);
+		Connection c = new Connection(10, in, out, 1, true);
 		in.addOutgoingConnection(c);
-		connections.add(c);
+		connections.put(10,c);
 		
-		//Connect hidden node to output 2
-		in = hiddenNodes.get(0);
-		out = outputNodes.get(2);
-		c = new Connection(8, in, out, 1, true);
+		//Connect hidden node id 8 to output id 7
+		in = hiddenNodes.get(8);
+		out = outputNodes.get(7);
+		c = new Connection(11, in, out, 1, true);
 		in.addOutgoingConnection(c);
-		connections.add(c);
+		connections.put(11,c);
 		
-		//Connect output 0 to itself
-		in = outputNodes.get(0);
-		out = outputNodes.get(0);
-		c = new Connection(9, in, out, 1, true);
+		//Connect output id 5 to itself
+		in = outputNodes.get(5);
+		out = outputNodes.get(5);
+		c = new Connection(12, in, out, 1, true);
 		in.addOutgoingConnection(c);
-		connections.add(c);
+		connections.put(12,c);
 		
-		//Connect output 0 to hidden node
-				in = outputNodes.get(0);
-				out = hiddenNodes.get(0);
-				c = new Connection(10, in, out, 1, true);
+		//Connect output id 5 to hidden node id 8
+				in = outputNodes.get(5);
+				out = hiddenNodes.get(8);
+				c = new Connection(13, in, out, 1, true);
 				in.addOutgoingConnection(c);
-				connections.add(c);
+				connections.put(13,c);
 		
 		//Create neural network
 		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
@@ -161,7 +178,7 @@ public class NeuralNetworkTest {
 	@Test
 	public void testIsAllOutputsReachable_ItIs(){
 		//Set up input and output nodes
-		setupInputOutputNodes();
+		createNodes();
 				
 		//Connect input nodes to output nodes
 		connectOneInputToOneOutput();
@@ -178,15 +195,15 @@ public class NeuralNetworkTest {
 	@Test
 	public void testIsAllOutputsReachable_Not(){
 		//Set up input and output nodes
-		setupInputOutputNodes();
+		createNodes();
 				
 		//Connect input nodes to output nodes
 		for (int i = 0; i < 2; i++){
-			Node in = inputNodes.get(i);
-			Node out = outputNodes.get(i);
+			Node in = inputNodes.get(i + 1);
+			Node out = outputNodes.get(i + 5);
 			Connection c = new Connection(i, in, out, 1, true);
 			in.addOutgoingConnection(c);
-			connections.add(c);
+			connections.put(i,c);
 		}
 				
 		//Create neural network

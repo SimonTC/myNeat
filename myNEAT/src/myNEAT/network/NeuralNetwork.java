@@ -1,6 +1,7 @@
 package myNEAT.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,8 +13,8 @@ public class NeuralNetwork {
 	public static final int HIDDEN = 3;
 
 	/* Typology */
-	private ArrayList<Node> allNodes, inputNodes, outputNodes, hiddenNodes;
-	private ArrayList<Connection> connections;
+	private HashMap<Integer, Node> allNodes, inputNodes, outputNodes, hiddenNodes;
+	private HashMap<Integer, Connection> connections;
 	
 	/* Other info */
 	private int genomeID;
@@ -27,25 +28,25 @@ public class NeuralNetwork {
 	 * @param hiddenNodes
 	 * @param connections
 	 */
-	public NeuralNetwork(int genomeID, ArrayList<Node> inputNodes,
-			ArrayList<Node> outputNodes, ArrayList<Node> hiddenNodes,
-			ArrayList<Connection> connections) {
+	public NeuralNetwork(int genomeID, HashMap<Integer, Node> inputNodes,
+			HashMap<Integer, Node> outputNodes, HashMap<Integer, Node> hiddenNodes,
+			HashMap<Integer, Connection> connections) {
 
 		// Create lists
-		this.inputNodes = new ArrayList<>();
-		this.hiddenNodes = new ArrayList<>();
-		this.outputNodes = new ArrayList<>();
-		this.allNodes = new ArrayList<>();
-		this.connections = new ArrayList<>();
+		this.inputNodes = new HashMap<>();
+		this.hiddenNodes = new HashMap<>();
+		this.outputNodes = new HashMap<>();
+		this.allNodes = new HashMap<>();
+		this.connections = new HashMap<>();
 
 		// Copy values
-		this.inputNodes.addAll(inputNodes);
-		this.outputNodes.addAll(outputNodes);
-		this.hiddenNodes.addAll(hiddenNodes);
-		this.allNodes.addAll(inputNodes);
-		this.allNodes.addAll(outputNodes);
-		this.allNodes.addAll(hiddenNodes);
-		this.connections.addAll(connections);
+		this.inputNodes.putAll(inputNodes);
+		this.outputNodes.putAll(outputNodes);
+		this.hiddenNodes.putAll(hiddenNodes);
+		this.allNodes.putAll(inputNodes);
+		this.allNodes.putAll(outputNodes);
+		this.allNodes.putAll(hiddenNodes);
+		this.connections.putAll(connections);
 		this.genomeID = genomeID;
 
 	}
@@ -60,13 +61,13 @@ public class NeuralNetwork {
 		}
 
 		// Set all nodes to not activated
-		for (Node n : allNodes) {
+		for (Node n : allNodes.values()) {
 			n.deActivate();
 		}
 
 		// Load inputvalues
 		for (int i = 0; i < inputs.length; i++) {
-			Node in = inputNodes.get(i);
+			Node in = inputNodes.get(i + 1);
 			double input = inputs[i];
 			in.addInput(input);
 		}
@@ -81,7 +82,7 @@ public class NeuralNetwork {
 		// Read output values
 		double[] outputs = new double[outputNodes.size()];
 		for (int i = 0; i < outputs.length; i++) {
-			outputs[i] = outputNodes.get(i).getOutput();
+			outputs[i] = outputNodes.get(i + 5).getOutput();
 		}
 
 		return outputs;
@@ -100,7 +101,7 @@ public class NeuralNetwork {
 		double[] output = this.activate(inputs, true);
 
 		// Test if all outputs has been activated
-		for (Node n : outputNodes) {
+		for (Node n : outputNodes.values()) {
 			if (!n.activated()) {
 				return false;
 			}
@@ -113,7 +114,7 @@ public class NeuralNetwork {
 		Queue<Node> activationQueue = new LinkedList<Node>();
 
 		// Add all input nodes
-		for (Node in : inputNodes) {
+		for (Node in : inputNodes.values()) {
 			activationQueue.add(in);
 		}
 
@@ -121,7 +122,7 @@ public class NeuralNetwork {
 			Node n = activationQueue.poll();
 			Node out;
 			n.activate();
-			for (Connection c : n.getOutgoing()) {
+			for (Connection c : n.getOutgoing().values()) {
 				if (c.isEnabled()) {
 					c.propagateSignal();
 					out = c.getOut();
@@ -135,12 +136,12 @@ public class NeuralNetwork {
 
 	private void continouousActivation(double[] inputs) {
 		// Activate all nodes once
-		for (Node n : allNodes) {
+		for (Node n : allNodes.values()) {
 			n.activate();
 		}
 
 		// Propagate all signals
-		for (Connection c : connections) {
+		for (Connection c : connections.values()) {
 			c.propagateSignal();
 		}
 	}
@@ -149,11 +150,11 @@ public class NeuralNetwork {
 	 * Resets all connections and flushes all nodes for input and output values.
 	 */
 	public void flush(){
-		for (Node n : allNodes){
+		for (Node n : allNodes.values()){
 			n.flush();
 		}
 		
-		for (Connection c : connections){
+		for (Connection c : connections.values()){
 			c.reset();
 		}
 	}
@@ -162,11 +163,11 @@ public class NeuralNetwork {
 		return genomeID;
 	}
 	
-	public ArrayList<Node> getAllNodes(){
+	public HashMap<Integer, Node> getAllNodes(){
 		return allNodes;
 	}
 	
-	public ArrayList<Connection> getConnections(){
+	public HashMap<Integer, Connection> getConnections(){
 		return connections;
 	}
 }
