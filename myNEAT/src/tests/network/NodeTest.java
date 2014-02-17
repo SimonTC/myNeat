@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import myNEAT.network.Connection;
 import myNEAT.network.Node;
+import myNEAT.network.activationFunctions.AFBias;
 import myNEAT.network.activationFunctions.AFSame;
 import myNEAT.network.activationFunctions.ActivationFunction;
 
@@ -68,6 +69,45 @@ public class NodeTest {
 		assertTrue("Node has not reset input", o > 0 - e && o < 0 + e);
 	}
 	
+	@Test
+	/**
+	 * Test equality
+	 */
+	public void testEqualNotEqual(){
+		Node m;
+		ActivationFunction af = new AFSame();
+		
+		n = new Node(0, 1, af, outgoing);			
+		
+		//Different ID
+		m = new Node(1, 1, af, outgoing);
+		assertFalse(n.equals(m));
+		
+		//Different type
+		m = new Node(0, 0, af, outgoing);
+		assertFalse(n.equals(m));
+		
+		//Different activation function
+		ActivationFunction bf = new AFBias(0);
+		m = new Node(0, 1, bf, outgoing);
+		assertFalse(n.equals(m));
+		
+		//Totally different
+		af = new AFBias(0);
+		m = new Node(1, 0, bf, outgoing);
+		assertFalse(n.equals(m));		
+	}
 	
+	@Test
+	
+	public void testEqualIsEqual(){
+		Node m;
+		ActivationFunction af = new AFSame();
+		
+		n = new Node(0, 1, af, outgoing);	
+		m = new Node(0, 1, af, outgoing);
+		
+		assertTrue(n.equals(m));
+	}
 
 }

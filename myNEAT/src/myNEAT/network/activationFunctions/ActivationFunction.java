@@ -14,4 +14,9 @@ public abstract class ActivationFunction {
 	public int getType(){
 		return this.functionType;
 	}
+	
+	public boolean equals (Object activationFunction){
+		return this.functionType ==
+				((ActivationFunction)activationFunction).getType();
+	}
 }

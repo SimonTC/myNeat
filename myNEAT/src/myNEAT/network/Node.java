@@ -55,6 +55,15 @@ public class Node {
 		this.output = 0;
 		activated = false;
 	}
+	
+	public boolean equals(Object node){
+		Node n = (Node)node;
+		if (this.nodeID != n.getNodeID()) return false;
+		if (!this.activationFunction.equals(n.getActivationFunction())) return false;
+		if (this.nodeType != n.getType()) return false;
+		return true;
+		
+	}
 
 	public double getOutput() {
 		return this.output;

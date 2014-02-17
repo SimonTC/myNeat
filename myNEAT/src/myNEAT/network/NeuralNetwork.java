@@ -170,4 +170,30 @@ public class NeuralNetwork {
 	public HashMap<Integer, Connection> getConnections(){
 		return connections;
 	}
+	
+	public boolean equals(Object neuralNetwork){
+		NeuralNetwork nn = (NeuralNetwork) neuralNetwork;
+		//Test ID
+		if (this.genomeID != nn.getID()) return false;
+		
+		//Test nodes
+		if (this.allNodes.size() != nn.getAllNodes().size()) return false;
+		for (Node n : this.allNodes.values()){
+			int key = n.getNodeID();
+			Node x = nn.getAllNodes().get(key);
+			if (x == null) return false;
+			if (!n.equals(x)) return false;
+		}
+		
+		//Test connections
+		if (this.getConnections().size() != nn.getConnections().size()) return false;
+		for (Connection c : this.connections.values()){
+			int key = c.getConnectionID();
+			Connection x = nn.getConnections().get(key);
+			if (x == null) return false;
+			if (!c.equals(x)) return false;
+		}
+		
+		return true;
+	}
 }

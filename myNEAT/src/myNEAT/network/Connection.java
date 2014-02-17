@@ -33,7 +33,19 @@ public class Connection {
 	public void addWeight(double weight) {
 		this.weight += weight;
 	}
-
+	
+	public boolean equals(Object connection){
+		Connection c = ((Connection)connection);
+		if (this.connectionID != c.getConnectionID()) return false;
+		if (!this.in.equals(c.getIn())) return false;
+		if (!this.out.equals(c.getOut())) return false;
+		double e = 0.00001; //TODO should this weight be changed to something even smaller?
+		if (!(this.weight > c.getWeight() - e && this.weight < c.getWeight() + e)) return false;
+		if (this.enabled != c.enabled) return false;
+		
+		return true;
+	}
+	
 	public boolean isEnabled() {
 		return enabled;
 	}

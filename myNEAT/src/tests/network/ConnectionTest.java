@@ -95,5 +95,48 @@ public class ConnectionTest {
 		double exp = 0;
 		assertTrue(o > exp - e && o < exp + e) ;
 	}
-
+	
+	@Test
+	/**
+	 * Testing equality
+	 */
+	
+	public void testEqualNotEqual(){
+		Connection d;
+		c = new Connection(0, in, out, (double) 0.5,true);
+		
+		//Different ID
+		d = new Connection(1, in, out, (double) 0.5,true);
+		assertFalse(c.equals(d));
+		
+		//Different in node
+		d = new Connection(0, out, out, (double) 0.5,true);
+		assertFalse(c.equals(d));
+		
+		//Different out node
+		d = new Connection(0, in, in, (double) 0.5,true);
+		assertFalse(c.equals(d));
+		
+		//Different weight
+		d = new Connection(0, in, out, (double) 0.501,true);
+		assertFalse(c.equals(d));
+		
+		//Different enabled
+		d = new Connection(0, in, out, (double) 0.5,false);
+		assertFalse(c.equals(d));
+		
+		//Totally different
+		d = new Connection(1, out, in, (double) 0.501,false);
+		assertFalse(c.equals(d));
+	}
+	
+	@Test
+	public void testEqualEqual(){
+		Connection d;
+		c = new Connection(0, in, out, (double) 0.5,true);
+		
+		d = new Connection(0, in, out, (double) 0.5,true);
+		
+		assertTrue(c.equals(d));
+	}
 }

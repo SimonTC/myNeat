@@ -8,31 +8,30 @@ import myNEAT.network.activationFunctions.ActivationFunction;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AFSameTest {
-
+public class AFBiasTest {
 
 	@Test
 	public void testActivation() {
-		ActivationFunction af = new AFSame();
+		AFBias af = new AFBias(1);
 		double e = 0.0001;
-		for (double i = -5; i <= 5; i= i+= 0.5){
-			double o = af.getActivation(i);
-			assertTrue(o > i - e && o < i + e);
-		}
+		
+		double o = af.getActivation(5);
+		assertTrue(o > 1 - e && o < 1 + e);
+		
 	}
 	
 	@Test 
 	public void testEqualNotEqual(){
-		ActivationFunction a = new AFSame();
-		ActivationFunction b = new AFBias(0);
+		AFBias a = new AFBias(0);
+		AFBias b = new AFBias(0.001);
 		
 		assertFalse(a.equals(b));
 	}
 	
 	@Test 
 	public void testEqualIsEqual(){
-		ActivationFunction a = new AFSame();
-		ActivationFunction b = new AFSame();
+		AFBias a = new AFBias(0);
+		AFBias b = new AFBias(0);
 		
 		assertTrue(a.equals(b));
 	}
