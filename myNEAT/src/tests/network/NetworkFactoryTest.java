@@ -41,15 +41,22 @@ public class NetworkFactoryTest {
 		String filepath = new File("").getAbsolutePath();
 		filepath += "/Test documents/genomefile to create from";
 		
+		//Create Neural network it should be tested against
+		createNodes();
+		createConnections();
+		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+		
 		//Create genome
+		NeuralNetwork newNN;
 		NetworkFactory nf = new NetworkFactory();
 		try {
-			NeuralNetwork nn = nf.createNetwork(filepath);
+			newNN = nf.createNetworkFromFile(filepath);	
+			assertTrue(newNN.equals(nn));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
+		}		
 		
 	}
 
@@ -80,7 +87,8 @@ public class NetworkFactoryTest {
 				}
 				
 				//Test if file was created and written correctly
-				assertTrue(infoInFileIsCorrect(filepath));
+				boolean status = infoInFileIsCorrect(filepath);
+				assertTrue(status);
 	}
 	
 	private void createNodes(){
@@ -93,7 +101,7 @@ public class NetworkFactoryTest {
 		
 		i1 = new Node(1, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
 		i2 = new Node(2, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
-		i3 = new Node(3, NeuralNetwork.INPUT, afBias, new HashMap<Integer, Connection>());
+		i3 = new Node(3, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
 		bias = new Node(4, NeuralNetwork.BIAS, afBias, new HashMap<Integer, Connection>());
 		inputNodes.put(1,i1);
 		inputNodes.put(2,i2);
@@ -105,7 +113,7 @@ public class NetworkFactoryTest {
 		outputNodes.put(5,o1);
 		outputNodes.put(6,o2);
 		
-		h1 = new Node(7, NeuralNetwork.HIDDEN, afBias, new HashMap<Integer, Connection>());
+		h1 = new Node(7, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
 		h2 = new Node(8, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
 		hiddenNodes.put(7,h1);
 		hiddenNodes.put(8,h2);
@@ -146,11 +154,11 @@ public class NetworkFactoryTest {
 			if (!s.equalsIgnoreCase("genomestart 0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 1 1 0 0.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 2 1 0 0.0")) return false; s = inputFile.nextLine();
-			if (!s.equalsIgnoreCase("node 3 1 1 0.0")) return false; s = inputFile.nextLine();
+			if (!s.equalsIgnoreCase("node 3 1 0 0.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 4 0 1 1.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 5 2 0 0.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 6 2 0 0.0")) return false; s = inputFile.nextLine();
-			if (!s.equalsIgnoreCase("node 7 3 1 0.0")) return false; s = inputFile.nextLine();
+			if (!s.equalsIgnoreCase("node 7 3 0 0.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("node 8 3 0 0.0")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("conn 0 1 5 0.1 1")) return false; s = inputFile.nextLine();
 			if (!s.equalsIgnoreCase("conn 1 1 7 0.5 1")) return false; s = inputFile.nextLine();

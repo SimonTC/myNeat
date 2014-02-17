@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 import myNEAT.network.activationFunctions.AFBias;
@@ -32,7 +33,7 @@ public class NetworkFactory {
 		connections = new HashMap<>();
 	}
 	
-	public NeuralNetwork createNetwork(String genomePath) throws FileNotFoundException{
+	public NeuralNetwork createNetworkFromFile(String genomePath) throws FileNotFoundException{
 		//Open file and scanner
 		File file = new File(genomePath);
 		Scanner inputFile = new Scanner(file);
@@ -45,10 +46,11 @@ public class NetworkFactory {
 		connections = new HashMap<>();
 		
 		//Scan file
-		Scanner curLine;;
-	
+		Scanner curLine;
+			
 		while (inputFile.hasNext()){
 			curLine = new Scanner(inputFile.nextLine());
+			curLine.useLocale(Locale.US); //Has to use US locale to make sure that '.' is used as decimal delimiter
 			if (!analyzeLine(curLine)){
 				//The line started with 'genomeend'
 				break;

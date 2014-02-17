@@ -18,7 +18,8 @@ public class AFBias extends ActivationFunction {
 		ActivationFunction af = (ActivationFunction) activationFunction;
 		if (this.functionType != (af.getType())) return false;
 		double e = 0.0001;
-		if (!(this.biasValue > af.getActivation(0) - e && this.biasValue < af.getActivation(0) + e )) return false;
+		double hisActivation = af.getActivation(0);
+		if (!(this.biasValue > hisActivation - e && this.biasValue < hisActivation + e )) return false;
 		return true;
 	}
 
