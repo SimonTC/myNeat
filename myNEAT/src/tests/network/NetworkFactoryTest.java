@@ -37,7 +37,20 @@ public class NetworkFactoryTest {
 	
 	@Test
 	public void testCreateNetwork() {
-		fail("Not yet implemented");
+		//Find genome file
+		String filepath = new File("").getAbsolutePath();
+		filepath += "/Test documents/genomefile to create from";
+		
+		//Create genome
+		NetworkFactory nf = new NetworkFactory();
+		try {
+			NeuralNetwork nn = nf.createNetwork(filepath);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
 	}
 
 	@Test
@@ -51,7 +64,8 @@ public class NetworkFactoryTest {
 				NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
 		
 				//Create genome file
-				String filepath = "D:/Users/Simon/Documents/Git Repository/myNeat/myNEAT/genomefile";
+				String filepath = new File("").getAbsolutePath();
+				filepath += "/Test documents/created genomefile";
 				NetworkFactory nf = new NetworkFactory();
 				try {
 					nf.createGenomeFile(nn, filepath);
