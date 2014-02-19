@@ -38,4 +38,10 @@ public class Organism {
 		return network;
 	}
 	
+	public boolean equals(Object organism){
+		Organism o = (Organism) organism;
+		if (this.id == o.id) return true;
+		return false;		
+	}
+	
 }

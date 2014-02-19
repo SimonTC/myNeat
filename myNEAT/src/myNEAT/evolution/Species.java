@@ -20,6 +20,7 @@ public class Species {
 		this.champion = null;
 		this.hasBeenSorted = false;
 		this.numberOfOrganisms = 0;
+		this.organisms = new ArrayList<>();
 	}
 	
 	public void addOrganism(Organism o){
@@ -33,7 +34,11 @@ public class Species {
 	 * @return
 	 */
 	public Organism getReprensentative(){
-		return organisms.get(0);
+		if (organisms.size() > 0){
+			return organisms.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
@@ -74,8 +79,14 @@ public class Species {
 		this.speciesAge =+ ageIncrement; 
 	}
 	
-	public void setChampion(Organism champion){
-		this.champion = champion;
+	public boolean setChampion(Organism champion){
+		if (organisms.contains(champion)){
+			this.champion = champion;
+			return true;
+		} else {
+			return false;
+		}
+			
 	}
 	
 	public ArrayList<Organism> getOrganisms(){
@@ -96,6 +107,10 @@ public class Species {
 
 	public int getNumberOfOrganisms() {
 		return numberOfOrganisms;
+	}
+	
+	public boolean isSorted(){
+		return this.hasBeenSorted;
 	}
 	
 	
