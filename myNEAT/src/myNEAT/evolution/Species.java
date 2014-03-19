@@ -13,6 +13,9 @@ public class Species {
 	private ArrayList<Organism> organisms;
 	private boolean hasBeenSorted;
 	private int numberOfOrganisms;
+	double avgFitness;
+	double maxFitness;
+	double minFitness;
 	
 	public Species(int speciesID, int speciesAge){
 		this.speciesID = speciesID;
@@ -50,9 +53,8 @@ public class Species {
 		hasBeenSorted = true;
 	}
 	
-	/**
-	 * 
-	 * @return the current set champion
+	/** 
+	 * @return the current champion
 	 */
 	public Organism getChampion(){
 		return champion;
@@ -89,6 +91,32 @@ public class Species {
 			
 	}
 	
+	/**
+	 * Computes min, max and avg fitness of the organisms in this species
+	 */
+	public void computeFitnessValues(){
+		double min = Double.POSITIVE_INFINITY;
+		double max = Double.NEGATIVE_INFINITY;
+		double avg;
+		double total = 0;
+		double fitness;
+		
+		for (Organism o : organisms){
+			fitness = o.getFitness();
+			if (fitness < min) min = fitness;
+			if (fitness > max) max = fitness;
+			total += fitness;
+		}
+		
+		double size = organisms.size();
+		avg = total / size;
+		
+		minFitness = min;
+		maxFitness = max;
+		avgFitness = avg;
+		
+	}
+	
 	public ArrayList<Organism> getOrganisms(){
 		return this.organisms;
 	}
@@ -111,6 +139,30 @@ public class Species {
 	
 	public boolean isSorted(){
 		return this.hasBeenSorted;
+	}
+
+	public double getAvgFitness() {
+		return avgFitness;
+	}
+
+	public void setAvgFitness(double avgFitness) {
+		this.avgFitness = avgFitness;
+	}
+
+	public double getMaxFitness() {
+		return maxFitness;
+	}
+
+	public void setMaxFitness(double maxFitness) {
+		this.maxFitness = maxFitness;
+	}
+
+	public double getMinFitness() {
+		return minFitness;
+	}
+
+	public void setMinFitness(double minFitness) {
+		this.minFitness = minFitness;
 	}
 	
 	
