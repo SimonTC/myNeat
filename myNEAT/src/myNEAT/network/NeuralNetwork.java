@@ -16,9 +16,6 @@ public class NeuralNetwork {
 	private HashMap<Integer, Node> allNodes, inputNodes, outputNodes, hiddenNodes;
 	private HashMap<Integer, Connection> connections;
 	
-	/* Other info */
-	private int genomeID;
-
 	/**
 	 * Creates the neural network based on the lists of nodes and connections.
 	 * Bias-nodes must be included in the list of input nodes;
@@ -47,7 +44,6 @@ public class NeuralNetwork {
 		this.allNodes.putAll(outputNodes);
 		this.allNodes.putAll(hiddenNodes);
 		this.connections.putAll(connections);
-		this.genomeID = genomeID;
 
 	}
 
@@ -168,10 +164,6 @@ public class NeuralNetwork {
 		}
 	}
 	
-	public int getID(){
-		return genomeID;
-	}
-	
 	public HashMap<Integer, Node> getAllNodes(){
 		return allNodes;
 	}
@@ -185,9 +177,7 @@ public class NeuralNetwork {
 	 */
 	public boolean equals(Object neuralNetwork){
 		NeuralNetwork nn = (NeuralNetwork) neuralNetwork;
-		//Test ID
-		if (this.genomeID != nn.getID()) return false;
-		
+				
 		//Test nodes
 		if (this.allNodes.size() != nn.getAllNodes().size()) return false;
 		for (Node n : this.allNodes.values()){
