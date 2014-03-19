@@ -108,7 +108,12 @@ public class NeuralNetwork {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Does one full activation where all nodes as activated once
+	 * Recurrent connections does not lead to more than one activations of a node
+	 * @param inputs
+	 */
 	private void fullActivation(double[] inputs) {
 
 		Queue<Node> activationQueue = new LinkedList<Node>();
@@ -133,7 +138,11 @@ public class NeuralNetwork {
 			}
 		}
 	}
-
+	
+	/**
+	 * Activates all nodes at the same time. Signal travels forward by one.
+	 * @param inputs
+	 */
 	private void continouousActivation(double[] inputs) {
 		// Activate all nodes once
 		for (Node n : allNodes.values()) {
@@ -171,6 +180,9 @@ public class NeuralNetwork {
 		return connections;
 	}
 	
+	/**
+	 * Tests if two neural networks are equal
+	 */
 	public boolean equals(Object neuralNetwork){
 		NeuralNetwork nn = (NeuralNetwork) neuralNetwork;
 		//Test ID

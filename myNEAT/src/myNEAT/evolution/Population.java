@@ -3,11 +3,11 @@ package myNEAT.evolution;
 import java.util.ArrayList;
 
 public class Population {
-	//Containers
+	/*Containers*/
 	private ArrayList<Organism> organisms;
 	private ArrayList<Species> species;
 	
-	//Fitness info
+	/*Fitness info*/
 		//Current generation
 		double minFitness;
 		double avgFitness;
@@ -21,10 +21,10 @@ public class Population {
 		
 	
 	
-	//Innovation info
+	/*Innovation info*/
 	
 	
-	//General info
+	/*General info*/
 	int generationNumber;
 	int lastSpeciesID; //Used when creating new species
 	int lastOrganismID; //Used when new organisms are created
