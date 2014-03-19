@@ -24,37 +24,51 @@ public class Genome {
 	String delimiter = " ";
 		
 	public Genome (String genomePath) throws FileNotFoundException{
-		//Open file and scanner
-		File file = new File(genomePath);
-		Scanner inputFile = new Scanner(file);
-					
-		//Ready lists
-		inputNodes = new HashMap<>();
-		outputNodes = new HashMap<>();
-		hiddenNodes = new HashMap<>();
-		allNodes = new HashMap<>();
-		connections = new HashMap<>();
-			
-		//Scan file
-		Scanner curLine;
-				
-		while (inputFile.hasNext()){
-			curLine = new Scanner(inputFile.nextLine());
-			curLine.useLocale(Locale.US); //Has to use US locale to make sure that '.' is used as decimal delimiter
-			if (!analyzeLine(curLine)){
-				//The line started with 'genomeend'
-				break;
-			}			
-		}
-			
-		//Create neural network
-		phenotype = new NeuralNetwork(genomeID, inputNodes, outputNodes, hiddenNodes, connections);
-			
-		//Close scanner
-		inputFile.close();
-		
+		createGenomeFromFile(genomePath);		
+	}
+	
+	/**
+	 * Creation of a new random genome with : new_id = numerical identification
+	 * of genome i = number of input nodes o = number of output nodes n = number
+	 * of hidden nodes nmax = number max of node this number must be >= (i + n +
+	 * o) r = the network can have a nodes recurrent ? linkprob = probability of
+	 * a link from nodes ( must be in interval ]0,1[);
+	 */
+	public Genome(int new_id, int i, int o, int n, int nmax, boolean r,
+			double linkprob) {
+		System.out.println("Not implemented yet!!!");
 	}
 		
+	private void createGenomeFromFile(String genomePath) throws FileNotFoundException{
+		//Open file and scanner
+				File file = new File(genomePath);
+				Scanner inputFile = new Scanner(file);
+							
+				//Ready lists
+				inputNodes = new HashMap<>();
+				outputNodes = new HashMap<>();
+				hiddenNodes = new HashMap<>();
+				allNodes = new HashMap<>();
+				connections = new HashMap<>();
+					
+				//Scan file
+				Scanner curLine;
+						
+				while (inputFile.hasNext()){
+					curLine = new Scanner(inputFile.nextLine());
+					curLine.useLocale(Locale.US); //Has to use US locale to make sure that '.' is used as decimal delimiter
+					if (!analyzeLine(curLine)){
+						//The line started with 'genomeend'
+						break;
+					}			
+				}
+					
+				//Create neural network
+				phenotype = new NeuralNetwork(genomeID, inputNodes, outputNodes, hiddenNodes, connections);
+					
+				//Close scanner
+				inputFile.close();
+	}
 	private boolean analyzeLine(Scanner curLine){
 		if (curLine.hasNext()){
 			String token = curLine.next();
