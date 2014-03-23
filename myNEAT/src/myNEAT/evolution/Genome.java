@@ -22,23 +22,42 @@ public class Genome {
 	private HashMap<Integer, Node> inputNodes, outputNodes, hiddenNodes, allNodes;
 	private HashMap<Integer, Connection> connections;
 	String delimiter = " ";
-		
+	
+	/**
+	 * Creates a genome based on the genome file
+	 * @param genomePath
+	 * @throws FileNotFoundException
+	 */
 	public Genome (String genomePath) throws FileNotFoundException{
 		createGenomeFromFile(genomePath);		
 	}
 	
 	/**
-	 * Creation of a new random genome with : new_id = numerical identification
-	 * of genome i = number of input nodes o = number of output nodes n = number
-	 * of hidden nodes nmax = number max of node this number must be >= (i + n +
-	 * o) r = the network can have a nodes recurrent ? linkprob = probability of
-	 * a link from nodes ( must be in interval ]0,1[);
+	 * Creates a new genome based on the list of nodes and connections in the genome
+	 * @param id
+	 * @param inputNodes
+	 * @param outputNodes
+	 * @param hiddenNodes
+	 * @param connections
 	 */
-	public Genome(int new_id, int i, int o, int n, int nmax, boolean r,
-			double linkprob) {
-		System.out.println("Not implemented yet!!!");
+	public Genome (int id, HashMap<Integer, Node> inputNodes, HashMap<Integer, Node> outputNodes, HashMap<Integer, Node> hiddenNodes, HashMap<Integer, Connection> connections){
+		this.genomeID=id;
+		this.inputNodes = inputNodes;
+		this.hiddenNodes = hiddenNodes;
+		this.outputNodes = outputNodes;
+		this.connections = connections;
+		this.allNodes = new HashMap<>();
+		allNodes.putAll(inputNodes);
+		allNodes.putAll(hiddenNodes);
+		allNodes.putAll(outputNodes);
+		phenotype = new NeuralNetwork(genomeID, inputNodes, outputNodes, hiddenNodes, connections);
 	}
-		
+	
+	/**
+	 * Reads a genome file and creates the genome from that
+	 * @param genomePath
+	 * @throws FileNotFoundException
+	 */
 	private void createGenomeFromFile(String genomePath) throws FileNotFoundException{
 		//Open file and scanner
 				File file = new File(genomePath);
@@ -249,5 +268,53 @@ public class Genome {
 
 		public int getGenomeID() {
 			return genomeID;
+		}
+
+		public HashMap<Integer, Node> getInputNodes() {
+			return inputNodes;
+		}
+
+		public void setInputNodes(HashMap<Integer, Node> inputNodes) {
+			this.inputNodes = inputNodes;
+		}
+
+		public HashMap<Integer, Node> getOutputNodes() {
+			return outputNodes;
+		}
+
+		public void setOutputNodes(HashMap<Integer, Node> outputNodes) {
+			this.outputNodes = outputNodes;
+		}
+
+		public HashMap<Integer, Node> getHiddenNodes() {
+			return hiddenNodes;
+		}
+
+		public void setHiddenNodes(HashMap<Integer, Node> hiddenNodes) {
+			this.hiddenNodes = hiddenNodes;
+		}
+
+		public HashMap<Integer, Node> getAllNodes() {
+			return allNodes;
+		}
+
+		public void setAllNodes(HashMap<Integer, Node> allNodes) {
+			this.allNodes = allNodes;
+		}
+
+		public HashMap<Integer, Connection> getConnections() {
+			return connections;
+		}
+
+		public void setConnections(HashMap<Integer, Connection> connections) {
+			this.connections = connections;
+		}
+
+		public void setPhenotype(NeuralNetwork phenotype) {
+			this.phenotype = phenotype;
+		}
+
+		public void setGenomeID(int genomeID) {
+			this.genomeID = genomeID;
 		}
 }
