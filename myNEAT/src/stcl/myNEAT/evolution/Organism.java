@@ -1,6 +1,7 @@
 package stcl.myNEAT.evolution;
 
-import stcl.myNEAT.network.NeuralNetwork;
+import stcl.myNEAT.genotypes.Genome;
+import stcl.myNEAT.phenotypes.NeuralNetwork;
 /**
  * The organism is the class that binds the genotype and the phenotype together
  * @author Simon

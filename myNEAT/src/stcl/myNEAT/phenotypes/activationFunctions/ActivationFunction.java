@@ -1,4 +1,4 @@
-package stcl.myNEAT.network.activationFunctions;
+package stcl.myNEAT.phenotypes.activationFunctions;
 
 public abstract class ActivationFunction {
 	

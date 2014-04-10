@@ -1,13 +1,13 @@
-package stcl.tests.network.activationFunctions;
+package stcl.tests.phenotypes.activationFunctions;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import stcl.myNEAT.network.activationFunctions.AFBias;
-import stcl.myNEAT.network.activationFunctions.AFSame;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import stcl.myNEAT.phenotypes.activationFunctions.AFBias;
+import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 public class AFBiasTest {
 

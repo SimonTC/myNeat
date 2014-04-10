@@ -1,14 +1,17 @@
-package stcl.myNEAT.evolution;
+package stcl.myNEAT.genotypes;
 
 import java.util.HashMap;
-import stcl.myNEAT.network.Connection;
-import stcl.myNEAT.network.Node;
+
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.NeuralNetwork;
+import stcl.myNEAT.phenotypes.Node;
 
 public class Genome {
 	//Variables used for the creation of the network
 	private int genomeID;
 	private HashMap<Integer, Node> inputNodes, outputNodes, hiddenNodes, allNodes;
 	private HashMap<Integer, Connection> connections;
+	private NeuralNetwork phenotype;
 	
 	/**
 	 * Creates a new genome based on the list of nodes and connections in the genome
@@ -28,6 +31,7 @@ public class Genome {
 		allNodes.putAll(inputNodes);
 		allNodes.putAll(hiddenNodes);
 		allNodes.putAll(outputNodes);
+		this.phenotype = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
 	}
 	
 		public int getGenomeID() {

@@ -1,31 +1,96 @@
-package stcl.myNEAT.network;
+package stcl.myNEAT.genotypes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
-import stcl.myNEAT.network.activationFunctions.AFBias;
-import stcl.myNEAT.network.activationFunctions.AFSame;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import org.apache.log4j.Logger;
+
+import stcl.LogTest;
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.NeuralNetwork;
+import stcl.myNEAT.phenotypes.Node;
+import stcl.myNEAT.phenotypes.NeuralNetwork.NodeType;
+import stcl.myNEAT.phenotypes.activationFunctions.AFBias;
+import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 /**
- * Responsible for creation of networks based on text files and for creating text files based on networks
+ * This class is caopable of parsing genome files used by the JNEAT implementation
+ * (http://nn.cs.utexas.edu/?jneat)
  * @author Simon
  *
  */
-public class NetworkFactory {
-	//Variables used for the creation of the network
-	private int genomeID;
+public class JNeatGenomeIO extends GenomeIO {
+	
+	private static final Logger logger = Logger.getLogger(LogTest.class);
+	
+	private final String DELIMITER = " ";
+	
+	//Containers used in the construction
 	private HashMap<Integer, Node> inputNodes, outputNodes, hiddenNodes, allNodes;
 	private HashMap<Integer, Connection> connections;
-	String delimiter = " ";
 	
-	public NetworkFactory(){
+	//Info about the genome. 
+	private int genomeID;
+	
+	@Override
+	public Genome readGenomeFile(String filePath) throws FileNotFoundException {
+							
+		//Instantiate containers
+		readyContainers();			
+		
+		
+			File file = new File(filePath);
+			Scanner inputFile;
+			inputFile = new Scanner(file);
+			while (inputFile.hasNext()){
+				Scanner curLine = new Scanner(inputFile.nextLine());
+				curLine.useLocale(Locale.US); //Has to use US locale to make sure that '.' is used as decimal delimiter
+				if (!analyzeLine(curLine)){
+					//The line started with 'genomeend'
+					break;
+				}
+				curLine.close();
+			}
+			inputFile.close();
+		
+		return new Genome(genomeID, inputNodes, outputNodes, hiddenNodes, connections);					
+		
+	}
+
+	@Override
+	public void printGenomeToFile(Genome genome, String filePath) throws FileNotFoundException {
+		//Load values for the containers
+		loadContainerValues(genome);
+		
+		//Write to file
+		File genomeFile = new File(filePath);
+		PrintWriter output = new PrintWriter(genomeFile);
+		
+		//Write first line
+		output.println("genomestart " + genomeID);
+		
+		//Write nodes
+		printNodes(output);
+		
+		//Write connections
+		printConnections(output);
+		
+		//Write end line
+		output.println("genomeend");
+		
+		output.close();
+
+	}
+	
+	/**
+	 * Instantiates the needed containers for the parsing
+	 */
+	private void readyContainers(){
 		inputNodes = new HashMap<>();
 		outputNodes = new HashMap<>();
 		hiddenNodes = new HashMap<>();
@@ -33,43 +98,28 @@ public class NetworkFactory {
 		connections = new HashMap<>();
 	}
 	
-	public NeuralNetwork createNetworkFromFile(String genomePath) throws FileNotFoundException{
-		//Open file and scanner
-		File file = new File(genomePath);
-		Scanner inputFile = new Scanner(file);
-				
-		//Ready lists
-		inputNodes = new HashMap<>();
-		outputNodes = new HashMap<>();
-		hiddenNodes = new HashMap<>();
-		allNodes = new HashMap<>();
-		connections = new HashMap<>();
+	//Reads info from the genome
+	private void loadContainerValues(Genome genome){
+		//Get genomeID
+		genomeID = genome.getGenomeID();
 		
-		//Scan file
-		Scanner curLine;
-			
-		while (inputFile.hasNext()){
-			curLine = new Scanner(inputFile.nextLine());
-			curLine.useLocale(Locale.US); //Has to use US locale to make sure that '.' is used as decimal delimiter
-			if (!analyzeLine(curLine)){
-				//The line started with 'genomeend'
-				break;
-			}			
-		}
-		
-		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(genomeID, inputNodes, outputNodes, hiddenNodes, connections);
-		
-		//Close scanner
-		inputFile.close();
-		return nn;
-		
+		inputNodes = genome.getInputNodes();
+		outputNodes = genome.getOutputNodes();
+		hiddenNodes = genome.getHiddenNodes();
+		connections = genome.getConnections();
 	}
 	
+	
+	/**
+	 * Reads the first word in the line to decide where to send the line
+	 * Only recognizes 'genomestart', 'node', 'conn', 'genomeend'
+	 * @param curLine
+	 * @return false if the end of the genome has been reached
+	 */
 	private boolean analyzeLine(Scanner curLine){
 		if (curLine.hasNext()){
 			String token = curLine.next();
-						
+							
 			if (token.equalsIgnoreCase("genomestart")){
 				genomeID = curLine.nextInt();					
 			} else if (token.equalsIgnoreCase("node")) {
@@ -84,13 +134,17 @@ public class NetworkFactory {
 		return true;		
 	}
 	
+	/**
+	 * Creates a new node based on the info in the line
+	 * @param curLine
+	 */
 	private void createNode(Scanner curLine){
 		//TODO Add exception handler if read values are of the wrong type
 		//TODO add exception handler if nodetype is wrong
 		
 		//Read values
 		int nodeID = curLine.nextInt();
-			int nodeTypeID = curLine.nextInt();
+		NodeType nodeType = NodeType.values()[curLine.nextInt()];
 			int activationFunctionID = curLine.nextInt();
 			double biasValue = curLine.nextDouble();
 			
@@ -98,20 +152,26 @@ public class NetworkFactory {
 			ActivationFunction af = createActivationFunction(activationFunctionID, biasValue);
 			
 		//Create node
-			Node n = new Node(nodeID, nodeTypeID, af, new HashMap<Integer, Connection>());
+			Node n = new Node(nodeID, nodeType, af, new HashMap<Integer, Connection>());
 		
 		//Add node to correct list
-			switch (nodeTypeID){
-			case NeuralNetwork.BIAS: inputNodes.put(nodeID, n); break;
-			case NeuralNetwork.INPUT: inputNodes.put(nodeID, n); break;
-			case NeuralNetwork.HIDDEN: hiddenNodes.put(nodeID, n); break;
-			case NeuralNetwork.OUTPUT: outputNodes.put(nodeID, n); break;			
+			switch (nodeType){
+			case BIAS: inputNodes.put(nodeID, n); break;
+			case INPUT: inputNodes.put(nodeID, n); break;
+			case HIDDEN: hiddenNodes.put(nodeID, n); break;
+			case OUTPUT: outputNodes.put(nodeID, n); break;			
 			}
 			
 			allNodes.put(nodeID, n);
 	
 	}
 	
+	/**
+	 * Creates the activation function for the node.
+	 * @param activationFunctionID
+	 * @param biasValue
+	 * @return
+	 */
 	private ActivationFunction createActivationFunction(int activationFunctionID, double biasValue){
 		//TODO link this method with activation function. No need to keep track of types in two classes
 		ActivationFunction af;
@@ -123,6 +183,10 @@ public class NetworkFactory {
 		return af;
 	}
 	
+	/**
+	 * Creates a new connection based on the info in the file
+	 * @param curLine
+	 */
 	private void createConnection(Scanner curLine){
 		//TODO Add exception handler for wrong types
 		
@@ -145,49 +209,12 @@ public class NetworkFactory {
 		
 	}
 	
-	public void createGenomeFile(NeuralNetwork network, String filePath) throws FileNotFoundException, IOException{
-		//Read info from neural network
-		genomeID = network.getID();
-		allNodes = network.getAllNodes();
-		distributeNodes();
-		connections = network.getConnections();
-		
-		//Write to file
-		File genomeFile = new File(filePath);
-		PrintWriter output = new PrintWriter(genomeFile);
-		
-		//Write first line
-		output.println("genomestart " + genomeID);
-		
-		//Write nodes
-		printNodes(output);
-		
-		//Write connections
-		printConnections(output);
-		
-		//Write end line
-		output.println("genomeend");
-		
-		output.close();
-		
-	}
-	
-	private void distributeNodes(){
-		for (Node n : allNodes.values()){
-			switch (n.getType()){
-			case NeuralNetwork.BIAS: inputNodes.put(n.getNodeID(), n); break;
-			case NeuralNetwork.INPUT: inputNodes.put(n.getNodeID(), n); break;
-			case NeuralNetwork.HIDDEN: hiddenNodes.put(n.getNodeID(), n); break;
-			case NeuralNetwork.OUTPUT: outputNodes.put(n.getNodeID(), n); break;
-			}
-		}
-	}
-
 	private void printNodes(PrintWriter output){
+		//TODO: What to do if there is more than one BIAS-nodes?
 		//Write input nodes
 		Node bias = null;
 		for (Node n : inputNodes.values()){
-			if (n.getType() == NeuralNetwork.BIAS){
+			if (n.getType() == NodeType.BIAS){
 				//We save bias for later
 				bias = n;
 			} else {
@@ -213,15 +240,15 @@ public class NetworkFactory {
 		
 		//Read values
 				int nodeID = n.getNodeID();
-				int nodeTypeID = n.getType();
+				NodeType nodeType = n.getType();
 				int activationFunctionID = n.getActivationFunction().getType();
 				double biasValue;
-				if (nodeTypeID == NeuralNetwork.BIAS){
+				if (nodeType == NodeType.BIAS){
 					biasValue = n.getActivationFunction().getActivation(0); //Input value doesn't matter as output from bias is constant
 				} else {
 					biasValue = 0;
 				}
-		s = "node" + delimiter + nodeID + delimiter + nodeTypeID + delimiter + activationFunctionID + delimiter + biasValue;
+		s = "node" + DELIMITER + nodeID + DELIMITER + nodeType + DELIMITER + activationFunctionID + DELIMITER + biasValue;
 		return s;
 	}
 	
@@ -240,9 +267,9 @@ public class NetworkFactory {
 			}
 			
 			//Write info
-			String s = "conn" + delimiter + connectionID + delimiter + inNodeID + delimiter + outNodeID + delimiter + connectionWeight + delimiter + enabled;
+			String s = "conn" + DELIMITER + connectionID + DELIMITER + inNodeID + DELIMITER + outNodeID + DELIMITER + connectionWeight + DELIMITER + enabled;
 			output.println(s);
 		}
-		
 	}
+
 }

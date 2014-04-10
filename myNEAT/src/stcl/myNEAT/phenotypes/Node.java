@@ -1,10 +1,10 @@
-package stcl.myNEAT.network;
+package stcl.myNEAT.phenotypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import stcl.myNEAT.network.NeuralNetwork.NodeType;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import stcl.myNEAT.phenotypes.NeuralNetwork.NodeType;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 public class Node {
 	private NodeType nodeType;

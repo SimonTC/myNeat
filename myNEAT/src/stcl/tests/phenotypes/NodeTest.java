@@ -1,4 +1,4 @@
-package stcl.tests.network;
+package stcl.tests.phenotypes;
 
 import static org.junit.Assert.*;
 
@@ -8,12 +8,12 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import stcl.myNEAT.network.Connection;
-import stcl.myNEAT.network.NeuralNetwork.NodeType;
-import stcl.myNEAT.network.Node;
-import stcl.myNEAT.network.activationFunctions.AFBias;
-import stcl.myNEAT.network.activationFunctions.AFSame;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.Node;
+import stcl.myNEAT.phenotypes.NeuralNetwork.NodeType;
+import stcl.myNEAT.phenotypes.activationFunctions.AFBias;
+import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 public class NodeTest {
 	Node n;

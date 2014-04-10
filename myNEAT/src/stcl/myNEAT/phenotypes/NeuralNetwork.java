@@ -1,4 +1,4 @@
-package stcl.myNEAT.network;
+package stcl.myNEAT.phenotypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class NeuralNetwork {
 	 * @param hiddenNodes
 	 * @param connections
 	 */
-	public NeuralNetwork(int genomeID, HashMap<Integer, Node> inputNodes,
+	public NeuralNetwork(HashMap<Integer, Node> inputNodes,
 			HashMap<Integer, Node> outputNodes, HashMap<Integer, Node> hiddenNodes,
 			HashMap<Integer, Connection> connections) {
 

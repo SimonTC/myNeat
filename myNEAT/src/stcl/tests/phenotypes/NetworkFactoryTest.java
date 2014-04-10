@@ -1,4 +1,4 @@
-package stcl.tests.network;
+package stcl.tests.phenotypes;
 
 import static org.junit.Assert.*;
 
@@ -12,14 +12,14 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 
-import stcl.myNEAT.network.Connection;
-import stcl.myNEAT.network.NetworkFactory;
-import stcl.myNEAT.network.NeuralNetwork;
-import stcl.myNEAT.network.Node;
-import stcl.myNEAT.network.NeuralNetwork.NodeType;
-import stcl.myNEAT.network.activationFunctions.AFBias;
-import stcl.myNEAT.network.activationFunctions.AFSame;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.NetworkFactory;
+import stcl.myNEAT.phenotypes.NeuralNetwork;
+import stcl.myNEAT.phenotypes.Node;
+import stcl.myNEAT.phenotypes.NeuralNetwork.NodeType;
+import stcl.myNEAT.phenotypes.activationFunctions.AFBias;
+import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 public class NetworkFactoryTest {
 
@@ -69,7 +69,7 @@ public class NetworkFactoryTest {
 				createConnections();
 				
 				//Create neural network
-				NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+				NeuralNetwork nn = new NeuralNetwork(inputNodes, outputNodes, hiddenNodes, connections);
 		
 				//Create genome file
 				String filepath = new File("").getAbsolutePath();

@@ -1,4 +1,4 @@
-package stcl.myNEAT.network;
+package stcl.myNEAT.phenotypes;
 
 public class Connection {
 	private int connectionID;

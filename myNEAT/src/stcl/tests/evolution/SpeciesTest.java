@@ -34,8 +34,8 @@ public class SpeciesTest {
 	 * Test that number of organisms is incremented and that hasBeenSorted is set to false
 	 */
 	public void testAddOrganism() {
-		Organism o0 = new Organism(0, 0, 0, null);
-		Organism o1 = new Organism(1, 0, 0, null);
+		Organism o0 = new Organism(0, 0, 0, null, null);
+		Organism o1 = new Organism(1, 0, 0, null, null);
 		s.addOrganism(o0);
 		s.sort();
 		s.addOrganism(o1);
@@ -48,7 +48,7 @@ public class SpeciesTest {
 	public void testGetReprensentative() {
 		Organism r = s.getReprensentative();
 		assertTrue(r==null);
-		Organism o0 = new Organism(0, 0, 0, null);
+		Organism o0 = new Organism(0, 0, 0, null, null);
 		s.addOrganism(o0);
 		r = s.getReprensentative();
 		assertTrue(r!= null);
@@ -66,7 +66,7 @@ public class SpeciesTest {
 		Organism o;
 		Random rand = new Random();
 		for (int i = 1; i <= numberOfOrganisms; i++){
-			o =  new Organism(i, (double) rand.nextDouble() * 100, 0, null);
+			o =  new Organism(i, (double) rand.nextDouble() * 100, 0, null, null);
 			s.addOrganism(o);
 		}
 	}
@@ -86,7 +86,7 @@ public class SpeciesTest {
 	@Test
 	public void testSetChampion() {
 		addRandomOrganisms(10);
-		Organism o0 = new Organism(0, 0, 0, null);
+		Organism o0 = new Organism(0, 0, 0, null, null);
 		assertFalse(s.setChampion(o0));
 		
 		s.addOrganism(o0);
@@ -97,7 +97,7 @@ public class SpeciesTest {
 	@Test
 	public void testGetChampion() {
 		addRandomOrganisms(10);
-		Organism o0 = new Organism(0, -500, 0, null);
+		Organism o0 = new Organism(0, -500, 0, null, null);
 		Organism c = s.getChampion();
 		
 		assertTrue(c==null);
@@ -115,11 +115,11 @@ public class SpeciesTest {
 	@Test
 	public void testGetChampionBoolean() {
 		addRandomOrganisms(10);
-		Organism o0 = new Organism(11, -500, 0, null);
+		Organism o0 = new Organism(11, -500, 0, null, null);
 		s.addOrganism(o0);
-		Organism o1 = new Organism(12, 500, 0, null);
+		Organism o1 = new Organism(12, 500, 0, null, null);
 		s.addOrganism(o1);
-		Organism o2 = new Organism(13, 0.005, 0, null); //Adding this to make sure max and min are not in the end
+		Organism o2 = new Organism(13, 0.005, 0, null, null); //Adding this to make sure max and min are not in the end
 		s.addOrganism(o2);
 		
 		//Test for returning smallest value
@@ -127,7 +127,7 @@ public class SpeciesTest {
 		c = s.getChampion(false);
 		assertTrue(c.equals(o0));
 		
-		Organism o3 = new Organism(14, 0.0052, 0, null); //Adding this to make sure max and min are not in the end
+		Organism o3 = new Organism(14, 0.0052, 0, null, null); //Adding this to make sure max and min are not in the end
 		s.addOrganism(o3);
 		
 		//Test for returning highest value
@@ -148,7 +148,7 @@ public class SpeciesTest {
 		
 		Random rand = new Random();
 		for (int i = 1; i <= 10; i++){
-			Organism o =  new Organism(i, (double) rand.nextDouble() * 100, 0, null);
+			Organism o =  new Organism(i, (double) rand.nextDouble() * 100, 0, null, null);
 			l.add(o);
 			s.addOrganism(o);
 		}

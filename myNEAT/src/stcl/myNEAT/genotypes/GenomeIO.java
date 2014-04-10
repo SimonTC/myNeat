@@ -1,10 +1,10 @@
-package stcl.myNEAT.evolution;
+package stcl.myNEAT.genotypes;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-import stcl.myNEAT.network.Connection;
-import stcl.myNEAT.network.Node;
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.Node;
 
 /**
  * A GenomeIO class is responsible translating a genome file into the internal genome format 

@@ -1,4 +1,4 @@
-package stcl.tests.network;
+package stcl.tests.phenotypes;
 
 import static org.junit.Assert.*;
 
@@ -9,13 +9,13 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import stcl.myNEAT.network.Connection;
-import stcl.myNEAT.network.NeuralNetwork;
-import stcl.myNEAT.network.NeuralNetwork.NodeType;
-import stcl.myNEAT.network.Node;
-import stcl.myNEAT.network.activationFunctions.AFBias;
-import stcl.myNEAT.network.activationFunctions.AFSame;
-import stcl.myNEAT.network.activationFunctions.ActivationFunction;
+import stcl.myNEAT.phenotypes.Connection;
+import stcl.myNEAT.phenotypes.NeuralNetwork;
+import stcl.myNEAT.phenotypes.Node;
+import stcl.myNEAT.phenotypes.NeuralNetwork.NodeType;
+import stcl.myNEAT.phenotypes.activationFunctions.AFBias;
+import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
+import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 public class NeuralNetworkTest {
 	
@@ -93,7 +93,7 @@ public class NeuralNetworkTest {
 		connectOneInputToOneOutput();
 		
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork( inputNodes, outputNodes, hiddenNodes, connections);
 		
 		//Test that inputs == outputs
 		double e = 0.0001;
@@ -143,7 +143,7 @@ public class NeuralNetworkTest {
 				connections.put(13,c);
 		
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork( inputNodes, outputNodes, hiddenNodes, connections);
 		
 		//Do 1st activation 
 		double[] inputs = {1,1,1};
@@ -185,7 +185,7 @@ public class NeuralNetworkTest {
 		connectOneInputToOneOutput();
 				
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork( inputNodes, outputNodes, hiddenNodes, connections);
 				
 		//Test if they are reachable
 		assertTrue(nn.isAllOutputsReachable());
@@ -208,7 +208,7 @@ public class NeuralNetworkTest {
 		}
 				
 		//Create neural network
-		NeuralNetwork nn = new NeuralNetwork(0, inputNodes, outputNodes, hiddenNodes, connections);
+		NeuralNetwork nn = new NeuralNetwork( inputNodes, outputNodes, hiddenNodes, connections);
 				
 		//Test if they are reachable
 		assertTrue(!nn.isAllOutputsReachable());

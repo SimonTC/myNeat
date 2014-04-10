@@ -1,4 +1,4 @@
-package stcl.myNEAT.network.activationFunctions;
+package stcl.myNEAT.phenotypes.activationFunctions;
 /**
  * Activation function that passes the input on to the output.
  * The input does not change
