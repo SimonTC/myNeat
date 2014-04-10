@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import stcl.myNEAT.network.Connection;
 import stcl.myNEAT.network.NeuralNetwork;
+import stcl.myNEAT.network.NeuralNetwork.NodeType;
 import stcl.myNEAT.network.Node;
 import stcl.myNEAT.network.activationFunctions.AFBias;
 import stcl.myNEAT.network.activationFunctions.AFSame;
@@ -35,22 +36,22 @@ public class NeuralNetworkTest {
 		Node o1, o2, o3; //Output nodes
 		ActivationFunction afSame = new AFSame();
 		
-		i1 = new Node(1, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
-		i2 = new Node(2, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
-		i3 = new Node(3, NeuralNetwork.INPUT, afSame, new HashMap<Integer, Connection>());
+		i1 = new Node(1, NodeType.INPUT, afSame, new HashMap<Integer, Connection>());
+		i2 = new Node(2, NodeType.INPUT, afSame, new HashMap<Integer, Connection>());
+		i3 = new Node(3, NodeType.INPUT, afSame, new HashMap<Integer, Connection>());
 		inputNodes.put(1,i1);
 		inputNodes.put(2,i2);
 		inputNodes.put(3,i3);
 		
-		o1 = new Node(5, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
-		o2 = new Node(6, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
-		o3 = new Node(7, NeuralNetwork.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		o1 = new Node(5, NodeType.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		o2 = new Node(6, NodeType.OUTPUT, afSame, new HashMap<Integer, Connection>());
+		o3 = new Node(7, NodeType.OUTPUT, afSame, new HashMap<Integer, Connection>());
 		outputNodes.put(5,o1);
 		outputNodes.put(6,o2);
 		outputNodes.put(7,o3);
 		
-		h1 = new Node(8, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
-		h2 = new Node(9, NeuralNetwork.HIDDEN, afSame, new HashMap<Integer, Connection>());
+		h1 = new Node(8, NodeType.HIDDEN, afSame, new HashMap<Integer, Connection>());
+		h2 = new Node(9, NodeType.HIDDEN, afSame, new HashMap<Integer, Connection>());
 		hiddenNodes.put(8,h1);
 		hiddenNodes.put(9,h2);
 	}

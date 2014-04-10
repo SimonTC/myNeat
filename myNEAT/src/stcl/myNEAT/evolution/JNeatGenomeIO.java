@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import stcl.LogTest;
 import stcl.myNEAT.network.Connection;
 import stcl.myNEAT.network.NeuralNetwork;
+import stcl.myNEAT.network.NeuralNetwork.NodeType;
 import stcl.myNEAT.network.Node;
 import stcl.myNEAT.network.activationFunctions.AFBias;
 import stcl.myNEAT.network.activationFunctions.AFSame;
@@ -143,7 +144,7 @@ public class JNeatGenomeIO extends GenomeIO {
 		
 		//Read values
 		int nodeID = curLine.nextInt();
-			int nodeTypeID = curLine.nextInt();
+		NodeType nodeType = NodeType.values()[curLine.nextInt()];
 			int activationFunctionID = curLine.nextInt();
 			double biasValue = curLine.nextDouble();
 			
@@ -151,14 +152,14 @@ public class JNeatGenomeIO extends GenomeIO {
 			ActivationFunction af = createActivationFunction(activationFunctionID, biasValue);
 			
 		//Create node
-			Node n = new Node(nodeID, nodeTypeID, af, new HashMap<Integer, Connection>());
+			Node n = new Node(nodeID, nodeType, af, new HashMap<Integer, Connection>());
 		
 		//Add node to correct list
-			switch (nodeTypeID){
-			case NeuralNetwork.BIAS: inputNodes.put(nodeID, n); break;
-			case NeuralNetwork.INPUT: inputNodes.put(nodeID, n); break;
-			case NeuralNetwork.HIDDEN: hiddenNodes.put(nodeID, n); break;
-			case NeuralNetwork.OUTPUT: outputNodes.put(nodeID, n); break;			
+			switch (nodeType){
+			case BIAS: inputNodes.put(nodeID, n); break;
+			case INPUT: inputNodes.put(nodeID, n); break;
+			case HIDDEN: hiddenNodes.put(nodeID, n); break;
+			case OUTPUT: outputNodes.put(nodeID, n); break;			
 			}
 			
 			allNodes.put(nodeID, n);
@@ -213,7 +214,7 @@ public class JNeatGenomeIO extends GenomeIO {
 		//Write input nodes
 		Node bias = null;
 		for (Node n : inputNodes.values()){
-			if (n.getType() == NeuralNetwork.BIAS){
+			if (n.getType() == NodeType.BIAS){
 				//We save bias for later
 				bias = n;
 			} else {
@@ -239,15 +240,15 @@ public class JNeatGenomeIO extends GenomeIO {
 		
 		//Read values
 				int nodeID = n.getNodeID();
-				int nodeTypeID = n.getType();
+				NodeType nodeType = n.getType();
 				int activationFunctionID = n.getActivationFunction().getType();
 				double biasValue;
-				if (nodeTypeID == NeuralNetwork.BIAS){
+				if (nodeType == NodeType.BIAS){
 					biasValue = n.getActivationFunction().getActivation(0); //Input value doesn't matter as output from bias is constant
 				} else {
 					biasValue = 0;
 				}
-		s = "node" + DELIMITER + nodeID + DELIMITER + nodeTypeID + DELIMITER + activationFunctionID + DELIMITER + biasValue;
+		s = "node" + DELIMITER + nodeID + DELIMITER + nodeType + DELIMITER + activationFunctionID + DELIMITER + biasValue;
 		return s;
 	}
 	

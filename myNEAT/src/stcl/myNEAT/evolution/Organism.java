@@ -14,11 +14,11 @@ public class Organism {
 	Genome genotype;
 	
 	
-	public Organism(int id, double initialFitness, int age, Genome genotype){
+	public Organism(int id, double initialFitness, int age, Genome genotype, NeuralNetwork phenotype){
 		this.id = id;
 		this.fitness = initialFitness;
 		this.genotype = genotype;
-		this.phenotype = genotype.getPhenotype();
+		this.phenotype=phenotype;
 	}
 	
 	public void addFitness(double fitness){

@@ -3,17 +3,18 @@ package stcl.myNEAT.network;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import stcl.myNEAT.network.NeuralNetwork.NodeType;
 import stcl.myNEAT.network.activationFunctions.ActivationFunction;
 
 public class Node {
-	private int nodeType;
+	private NodeType nodeType;
 	private int nodeID;
 	private double input, output;
 	private boolean activated;
 	private ActivationFunction activationFunction;
 	private HashMap<Integer, Connection> outgoing;
 
-	public Node(int id, int nodeType, ActivationFunction activationFunction,
+	public Node(int id, NodeType nodeType, ActivationFunction activationFunction,
 			HashMap<Integer, Connection> outgoing) {
 		this.nodeID = id;
 		this.nodeType = nodeType;
@@ -77,7 +78,7 @@ public class Node {
 		this.activated = false;
 	}
 
-	public int getType() {
+	public NodeType getType() {
 		return this.nodeType;
 	}
 

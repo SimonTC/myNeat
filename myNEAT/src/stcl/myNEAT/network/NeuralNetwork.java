@@ -7,10 +7,8 @@ import java.util.Queue;
 
 public class NeuralNetwork {
 	/* Node type constants */
-	public static final int BIAS = 0;
-	public static final int INPUT = 1;
-	public static final int OUTPUT = 2;
-	public static final int HIDDEN = 3;
+	public enum NodeType {BIAS, INPUT, OUTPUT, HIDDEN};
+	
 
 	/* Typology */
 	private HashMap<Integer, Node> allNodes, inputNodes, outputNodes, hiddenNodes;

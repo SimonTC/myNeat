@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import stcl.myNEAT.network.Connection;
+import stcl.myNEAT.network.NeuralNetwork.NodeType;
 import stcl.myNEAT.network.Node;
 import stcl.myNEAT.network.activationFunctions.AFBias;
 import stcl.myNEAT.network.activationFunctions.AFSame;
@@ -22,7 +23,7 @@ public class NodeTest {
 	public void setUp() throws Exception {
 		ActivationFunction af = new AFSame();
 		outgoing = new HashMap<Integer, Connection>();
-		n = new Node(0, 1, af, outgoing);		
+		n = new Node(0, NodeType.INPUT, af, outgoing);		
 	}
 
 	@Test
@@ -31,7 +32,7 @@ public class NodeTest {
 	 */
 	public void testNode() {
 		assertTrue("Node set to be activated", n.activated() == false);
-		assertTrue("Nodetype is wrong", n.getType() == 1);
+		assertTrue("Nodetype is wrong", n.getType() == NodeType.INPUT);
 		assertTrue("NodeID is wrong", n.getNodeID() == 0);
 	}
 
@@ -77,24 +78,24 @@ public class NodeTest {
 		Node m;
 		ActivationFunction af = new AFSame();
 		
-		n = new Node(0, 1, af, outgoing);			
+		n = new Node(0, NodeType.INPUT, af, outgoing);			
 		
 		//Different ID
-		m = new Node(1, 1, af, outgoing);
+		m = new Node(1, NodeType.INPUT, af, outgoing);
 		assertFalse(n.equals(m));
 		
 		//Different type
-		m = new Node(0, 0, af, outgoing);
+		m = new Node(0, NodeType.BIAS, af, outgoing);
 		assertFalse(n.equals(m));
 		
 		//Different activation function
 		ActivationFunction bf = new AFBias(0);
-		m = new Node(0, 1, bf, outgoing);
+		m = new Node(0, NodeType.INPUT, bf, outgoing);
 		assertFalse(n.equals(m));
 		
 		//Totally different
 		af = new AFBias(0);
-		m = new Node(1, 0, bf, outgoing);
+		m = new Node(1, NodeType.BIAS, bf, outgoing);
 		assertFalse(n.equals(m));		
 	}
 	
@@ -104,8 +105,8 @@ public class NodeTest {
 		Node m;
 		ActivationFunction af = new AFSame();
 		
-		n = new Node(0, 1, af, outgoing);	
-		m = new Node(0, 1, af, outgoing);
+		n = new Node(0, NodeType.INPUT, af, outgoing);	
+		m = new Node(0, NodeType.INPUT, af, outgoing);
 		
 		assertTrue(n.equals(m));
 	}

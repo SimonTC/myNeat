@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import stcl.myNEAT.network.Connection;
 import stcl.myNEAT.network.Node;
+import stcl.myNEAT.network.NeuralNetwork.NodeType;
 import stcl.myNEAT.network.activationFunctions.AFSame;
 import stcl.myNEAT.network.activationFunctions.ActivationFunction;
 
@@ -23,8 +24,8 @@ public class ConnectionTest {
 	public void setUp() throws Exception {
 		ActivationFunction af = new AFSame();
 		outgoing = new HashMap<>();
-		in = new Node(0, 1, af, outgoing);
-		out = new Node(1, 0, af, outgoing);
+		in = new Node(0, NodeType.INPUT, af, outgoing);
+		out = new Node(1, NodeType.BIAS, af, outgoing);
 		
 	}
 
