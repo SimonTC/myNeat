@@ -22,7 +22,9 @@ public class Population {
 	
 	
 	/*Innovation info*/
-	
+	private int lastInnovationNumber; 
+	private int lastNodeID;
+		
 	
 	/*General info*/
 	private int generationNumber;
