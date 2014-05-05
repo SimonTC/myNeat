@@ -12,10 +12,10 @@ public class GenomeTest {
 	}
 
 	@Test
-	public void testEqualsObject() {
+	public void testGenome() {
 		fail("Not yet implemented");
 	}
-	
+
 	@Test
 	public void testEqualsObject() {
 		fail("Not yet implemented");
