@@ -1,13 +1,21 @@
 package stcl.myNEAT.phenotypes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class NeuralNetwork {
 	/* Node type constants */
-	public enum NodeType {BIAS, INPUT, OUTPUT, HIDDEN};
+	public enum NodeType {
+		BIAS(0), INPUT(1), OUTPUT(2), HIDDEN(3);
+		private final int value;
+		private NodeType(int value){
+			this.value = value;
+		}
+		public int getValue(){
+			return value;
+		}
+	};
 	
 
 	/* Typology */

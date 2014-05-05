@@ -9,15 +9,15 @@ public class Population {
 	
 	/*Fitness info*/
 		//Current generation
-		double minFitness;
-		double avgFitness;
-		double maxFitness;
-		double variance;
-		double standardDeviation;
+		private double minFitness;
+		private double avgFitness;
+		private double maxFitness;
+		private double variance;
+		private double standardDeviation;
 	
 		//Fitness info used for stagnation detection
-		double highestFitness;
-		int generationWithLastFitnessChange;
+		private double highestFitnessEver;
+		private int generationWithLastFitnessIncrease;
 		
 	
 	
@@ -25,9 +25,9 @@ public class Population {
 	
 	
 	/*General info*/
-	int generationNumber;
-	int lastSpeciesID; //Used when creating new species
-	int lastOrganismID; //Used when new organisms are created
+	private int generationNumber;
+	private int lastSpeciesID; //Used when creating new species
+	private int lastOrganismID; //Used when new organisms are created
 	
 	
 	

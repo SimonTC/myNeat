@@ -19,7 +19,7 @@ import stcl.myNEAT.phenotypes.activationFunctions.AFSame;
 import stcl.myNEAT.phenotypes.activationFunctions.ActivationFunction;
 
 /**
- * This class is caopable of parsing genome files used by the JNEAT implementation
+ * This class is capable of parsing genome files used by the JNEAT implementation
  * (http://nn.cs.utexas.edu/?jneat)
  * @author Simon
  *
@@ -248,7 +248,7 @@ public class JNeatGenomeIO extends GenomeIO {
 				} else {
 					biasValue = 0;
 				}
-		s = "node" + DELIMITER + nodeID + DELIMITER + nodeType + DELIMITER + activationFunctionID + DELIMITER + biasValue;
+		s = "node" + DELIMITER + nodeID + DELIMITER + nodeType.getValue() + DELIMITER + activationFunctionID + DELIMITER + biasValue;
 		return s;
 	}
 	

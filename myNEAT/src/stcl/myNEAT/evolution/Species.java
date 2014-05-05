@@ -17,9 +17,9 @@ public class Species {
 	private ArrayList<Organism> organisms;
 	private boolean hasBeenSorted;
 	private int numberOfOrganisms;
-	double avgFitness;
-	double maxFitness;
-	double minFitness;
+	private double avgFitness;
+	private double maxFitness;
+	private double minFitness;
 	
 	public Species(int speciesID, int speciesAge){
 		this.speciesID = speciesID;
