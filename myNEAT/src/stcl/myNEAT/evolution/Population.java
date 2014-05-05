@@ -22,6 +22,7 @@ public class Population {
 	
 	
 	/*Innovation info*/
+	private ArrayList<Innovation> innovations; //This list holds all innovations that has happened during the epoch
 	private int lastInnovationNumber; 
 	private int lastNodeID;
 		
